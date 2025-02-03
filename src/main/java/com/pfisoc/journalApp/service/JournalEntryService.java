@@ -25,9 +25,14 @@ public class JournalEntryService {
     {
         User user = userService.findByUserName(userName);
         journalEntry.setDate(LocalDateTime.now());
-        JournalEntry saved = journalEntryRepo.save(journalEntry);
-        user.getJournalEntries().add(saved);
+        JournalEntry saved = journalEntryRepo.save(journalEntry);   //saved journalEntry in journaldb collection
+        user.getJournalEntries().add(saved);  //saved in jouralEntries list in users collection
         userService.saveUser(user);
+    }
+
+    public void saveEntry(JournalEntry journalEntry)
+    {
+        journalEntryRepo.save(journalEntry);
     }
 
     public List<JournalEntry> getAllJournalEntry() {
@@ -39,9 +44,11 @@ public class JournalEntryService {
         return journalEntryRepo.findById(id);
     }
 
-    public void deleteJournalEntryById(ObjectId id)
+    public void deleteJournalEntryById(ObjectId id,String userName)
     {
+        User user = userService.findByUserName(userName);
+        user.getJournalEntries().removeIf(x -> x.getId().equals(id));
+        userService.saveUser(user);
         journalEntryRepo.deleteById(id);
-        return ;
     }
 }
