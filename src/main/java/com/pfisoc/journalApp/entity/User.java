@@ -13,6 +13,7 @@ import java.util.List;
 
 @Document(collection = "users")
 @Data
+@NoArgsConstructor
 public class User {
     @Id
     private ObjectId id;
@@ -25,6 +26,7 @@ public class User {
 
     @DBRef  // this is acting like foreign key
     private List<JournalEntry> journalEntries = new ArrayList<>();
+    private List<String> roles;
 
 
 }
