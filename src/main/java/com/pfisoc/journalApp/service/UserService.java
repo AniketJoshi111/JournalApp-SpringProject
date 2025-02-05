@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -30,7 +31,9 @@ public class UserService {
         userRepo.save(user);
     }
 
-
+    public List<User> getAll(){
+        return userRepo.findAll();
+    }
     public Optional<User> findById(ObjectId id)
     {
         return userRepo.findById(id);
@@ -45,5 +48,11 @@ public class UserService {
     public  User findByUserName(String userName)
     {
         return userRepo.findByUserName(userName);
+    }
+
+    public void saveAdmin(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Arrays.asList("USER","ADMIN"));
+        userRepo.save(user);
     }
 }
